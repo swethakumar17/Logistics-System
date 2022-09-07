@@ -1,0 +1,96 @@
+{% extends 'LCS/Layout.html' %}
+{% block content %}
+<form action="addrecord/" method="post">
+<h1>Order Summary</h1>
+  <table class="table" id="cart_table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        <span>Item</span>
+                    </th>
+                    <th>
+                        <span>Price</span>
+                    </th>
+                    <th>
+                        <span>Quantity</span>
+                    </th>
+                </tr>
+            </thead>
+            <br>
+            {% for key,value in request.session.cart.items %}
+            <tr>
+                <td class="cart-item">
+                    {{value.name}}
+                </td>
+                <td class="cart-price">
+                    {{value.price}}
+
+                </td>
+                <td class="cart-quantity">
+                    {{value.quantity}}
+                </td>
+            </tr>
+            {% endfor %}
+<tr><td>
+</td>
+<td><b>Total: {{cart_data}}</b></td>
+<td></td></tr>
+
+        </table>
+    <br><br>
+<div>   <h2>Destination details</h2></div>
+
+    <br><br>
+    {% csrf_token %}
+<div class="row g-3">
+  <div class="col">
+    <input type="text" class="form-control" placeholder="First name" aria-label="First name" name="first">
+  </div>
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name" name="last">
+  </div>
+
+</div>
+     <br><br>
+    <div class="row g-3">
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Email Address" aria-label="First name" name="email">
+  </div>
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Mobile" aria-label="Last name" name="mobile">
+  </div>
+</div>
+    <br><br>
+    <div class="row g-3">
+  <div class="col">
+    <input type="text" class="form-control w-75
+" placeholder="Address" aria-label="First name" name="address">
+  </div>
+        <div class="col">
+            Source:
+   <select name="source" id="source">
+  <option value="-1">--Select--</option>
+       {% for row in source %}
+       <option value={{row.id}}>{{row.source}}</option>
+       {% endfor %}
+   </select>
+  </div>
+        <div class="col">
+             Vehicle:
+   <select name="vehicle" id="vehicle">
+  <option value="-1">--Select--</option>
+       {% for row in vehicle %}
+       <option value={{row.id}}>{{row.name}}</option>
+       {% endfor %}
+   </select>
+  </div>
+</div>
+
+    <br><br>
+    <div class="text-center">
+    <input type="submit" class="btn btn-primary " value="Place Order">
+        </div>
+    <br></br>
+</form>
+
+    {% endblock %}

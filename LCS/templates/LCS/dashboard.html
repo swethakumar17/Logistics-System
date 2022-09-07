@@ -1,0 +1,135 @@
+{% extends 'LCS/Layout.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<section class="container">
+    <h2 class="section-header">Clothes</h2>
+    <i class="fa-solid fa-cart-shopping"></i>
+<br></br>
+    <div class="shop-items">
+        {% for i in products %}
+<div class="shop-item">
+
+                        <span class="shop-item-title1 text-wrap" style="width: 13rem;">{{i.name}}</span>
+    <!--                    <img class="shop-item-image" src="https://store.ferrari.com/product_image/30629810019624721/F/w480.jpg">-->
+                        <div class="shop-item-details">
+                            <span class="shop-item-price">Price ${{i.price}}</span>
+                        </div>
+                        <div>
+                            <a href="{% url 'cart_add' i.id %}" class="btn btn-primary shop-item-button" style="color:white;"> Add to Pack</a>
+                        </div>
+</div>
+
+                            {% endfor %}
+    </div>
+</section>
+
+{% load cart_tag %}
+
+<!-- Total Length :: {{request.session.cart|length}} -->
+<br>
+<br>
+<br>
+
+
+<section class="container" id="cont">
+      <h2 class="section-header"> Pack </h2>
+
+        <table class="table" id="product_data">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        <span>Item</span>
+                    </th>
+                    <th>
+                        <span>Price</span>
+                    </th>
+                    <th>
+                        <span>Quantity</span>
+                    </th>
+                    <th>
+                        <span>Total</span>
+                    </th>
+                </tr>
+            </thead>
+            <br>
+            {% for key,value in request.session.cart.items %}
+            <tr>
+
+                <td class="cart-item">
+                    {{value.name}}
+                </td>
+                <td class="cart-price">
+                    {{value.price}}
+                </td>
+                <td class="cart-quantity">
+                    <a href="{% url 'item_decrement' value.product_id %}" class="btn btn-light" id="a-minus"> - </a>
+                    {{value.quantity}}
+                    <a href="{% url 'item_increment' value.product_id %}" class="btn btn-light" id="a-plus"> + </a>
+                </td>
+                <td class="cart-quantity-input">
+                    $ {{value.price|multiply:value.quantity}}
+
+                </td>
+                <td  class="cart-quantity-input">
+                    <a href="{% url 'item_clear' value.product_id %} " class="btn btn-outline-danger" > Remove </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+<!--	<div class="cart-row">-->
+<!--		<span class="cart-item cart-header cart-column">Item</span>-->
+<!--		<span class="cart-price cart-header cart-column">Price</span>-->
+<!--		<span class="cart-quantity cart-header cart-column">Quantity</span>-->
+<!--		<span class="cart-total-title cart-header cart-column">Total</span>-->
+<!--	</div>-->
+	<div class="cart-items">
+
+{% for key,value in request.session.cart.items %}
+<!--<div class="cart-rows">-->
+<!--							<span class="cart-item cart-column">{{value.name}}</span>-->
+<!--							<span class="cart-price  cart-column">{{value.price}}</span>-->
+
+<!--						    <a href="{% url 'item_decrement' value.product_id %}" class="btn btn-light" id="a-plus"> - </a>-->
+
+<!--							<span class="cart-quantity-input cart-column">-->
+<!--								{{value.quantity}}</span>-->
+<!--								<a href="{% url 'item_increment' value.product_id %}" class="btn btn-light" id="a-plus"> + </a>-->
+
+
+<!--			    	<span claxss="cart-total cart-column">$ {{value.price|multiply:value.quantity}}</span>-->
+<!--						<a href="{% url 'item_clear' value.product_id %} " class="btn btn-outline-danger" > Remove </a>-->
+
+<!--		</div>-->
+{% endfor %}
+	</div>
+</section>
+<br>
+<br>
+<div class="container">
+	<div>
+  <div class="center">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >ADD PACK TO CART</button>
+</div></div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm Selection</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Continue shopping?
+      </div>
+      <div class="modal-footer">
+          <a href=" {% url 'pack' %} " class="btn btn-primary" > Yes </a>
+          <a href=" {% url 'cart' %} " class="btn btn-primary" > No </a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br>
+{% endblock %}
